@@ -10,6 +10,7 @@ namespace KaitoMajima.Radar
     {
         [SerializeField] private List<GradeStat> _stats;
 
+        public int Count { get => _stats.Count;}
         public void AddStat(string name, GradeStat.Grade value)
         {
             var stat = new GradeStat(name, value);
@@ -27,7 +28,10 @@ namespace KaitoMajima.Radar
             var stat = _stats.Find(x => x.name == name);
             return stat;
         }
-
+        public GradeStat GetStat(int index)
+        {
+            return _stats[index];
+        }
         public IEnumerator GetEnumerator()
         {
             return _stats.GetEnumerator();
