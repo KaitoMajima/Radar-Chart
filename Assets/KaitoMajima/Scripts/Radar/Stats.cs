@@ -62,7 +62,10 @@ namespace KaitoMajima.Radar
             var stat = _stats.Find(x => x.name == name);
             return stat;
         }
-
+        public ValueStat GetStat(int index)
+        {
+            return _stats[index];
+        }
         public IEnumerator GetEnumerator()
         {
             return _stats.GetEnumerator();

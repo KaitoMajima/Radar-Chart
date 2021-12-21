@@ -4,32 +4,38 @@ using DG.Tweening;
 using KaitoMajima.TweenControllers;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace KaitoMajima.Radar
 {
     public class RadarChartView : MonoBehaviour
     {
+        [Header("Local Dependencies")]
         [SerializeField] private RadarChart _radarChart;
 
         [Header("Scene Dependencies")]
-
         [SerializeField] private CanvasRenderer _meshCanvasRenderer;
-        [SerializeField] private Material _meshMaterial;
-
         [SerializeField] private RectTransform _highestRadarPoint;
-
-        [SerializeField] private List<Image> _statsBars;
         [SerializeField] private List<TMP_Text> _statNameTextComponents;
         [SerializeField] private List<TMP_Text> _statValueTextComponents;
 
-        [Header("Visuals")]
-        private List<Tween> _scalingTweens = new List<Tween>();
-        [SerializeField] private TweenSettings _scalingTweenSettings = TweenControllers.TweenSettings.Default;
+        [Header("Project Dependencies")]
+        [SerializeField] private Material _meshMaterial;
+
+        [Header("Animations")]
+        private List<Tween> _vertexMoveTweens = new List<Tween>();
+        [SerializeField] private TweenSettings _vertexMoveTweenSettings = TweenControllers.TweenSettings.Default;
+        
+        [Header("Settings")]
+        [SerializeField] private bool _useApproximateLevelsForNone;
+        private Mesh _radarMesh;
+        private Vector3[] _radarMeshVertices;
+        private Vector2[] _radarMeshUVs;
+        private int[] _radarMeshTriangles;
 
         private void OnEnable()
         {
             InitiateVisuals();
+            ProcessVisuals();
             _radarChart.onStatsChanged += ProcessVisuals;
         }
         private void OnDisable()
@@ -51,23 +57,19 @@ namespace KaitoMajima.Radar
                 statNameTextComponent.SetText(gradeStat.name);
                 index++;
             }
-
+            
+            InitializeMeshData(out _radarMesh, out _radarMeshVertices, out _radarMeshUVs, out _radarMeshTriangles);
             
         }
         [ContextMenu("Debug Visuals")]
         private void ProcessVisuals()
         {
-            _scalingTweens.Clear();
+            _vertexMoveTweens.Clear();
 
             int index = 0;
             
             foreach (var stat in _radarChart.Stats)
             {
-                if(!CheckIndexHasntSurpassedList(index, _statsBars))
-                    return;
-
-                var statBarRectTransform = _statsBars[index].rectTransform;
-
                 if(!CheckIndexHasntSurpassedList(index, _statValueTextComponents))
                     return;
 
@@ -79,25 +81,31 @@ namespace KaitoMajima.Radar
                 
                 index++;
             }
-            CreateTweensForScaling();
+            CreateMesh();
+
+            void SetGradeText(GradeStat gradeStat, TMP_Text statValueTextComponent)
+            {
+                var gradeStatGrade = gradeStat.value.ToString();
+
+                switch (gradeStatGrade)
+                {
+                    case "None":
+                        gradeStatGrade = string.Empty;
+                        break;
+                    case "Infinity":
+                        gradeStatGrade = "∞";
+                        break;
+                }
+
+                statValueTextComponent.SetText(gradeStatGrade);
+            }
         }
 
-
-        private void CreateTweensForScaling()
+        private void CreateMesh()
         {
-            // var scalingTween = (Tween)statBarRectTransform.DOScaleY((float)gradeStat.value / (Enum.GetNames(typeof(GradeStat.Grade)).Length - 1), _scalingTweenSettings.duration);
-            // _scalingTweenSettings.ApplyTweenSettings(ref scalingTween);
-            // _scalingTweens.Add(scalingTween);
-
-            Mesh mesh;
-            Vector3[] verts;
-            Vector2[] uvs;
-            int[] tris;
-            InitializeMeshData(out mesh, out verts, out uvs, out tris);
-
-            DefineVertices(_radarChart.Stats, verts);
-            DefineTriangles(tris);
-            SetMeshData(mesh, verts, uvs, tris);
+            DefineVertices(_radarChart.Stats, _radarMeshVertices);
+            DefineTriangles(_radarMeshTriangles);
+            SetMeshData(_radarMesh, _radarMeshVertices, _radarMeshUVs, _radarMeshTriangles);
         }
 
         private void InitializeMeshData(out Mesh mesh, out Vector3[] verts, out Vector2[] uvs, out int[] tris)
@@ -117,15 +125,41 @@ namespace KaitoMajima.Radar
             var highestRadarPointYAxis = _highestRadarPoint.anchoredPosition.y;
             for (int i = 1; i < verts.Length; i++)
             {
+
                 var statIndex = i - 1;
                 var gradeStat = gradeStats.GetStat(statIndex);
                 var normalizedGradeStatValue = (float)gradeStat.value / (Enum.GetNames(typeof(GradeStat.Grade)).Length - 1);
-                
-                if(normalizedGradeStatValue == 0)
+
+                if (normalizedGradeStatValue == 0 && _useApproximateLevelsForNone)
                     normalizedGradeStatValue = 0.05f;
-                
-                verts[i] = Quaternion.Euler(0, 0, statIndex * -angleIncrement) * Vector3.up * (highestRadarPointYAxis * normalizedGradeStatValue);
+
+                var result = Quaternion.Euler(0, 0, statIndex * -angleIncrement) * Vector3.up * (highestRadarPointYAxis * normalizedGradeStatValue);
+
+                var vertex = verts[i];
+                var index = i;
+
+                var vertexMoveTween = (Tween)DOTween.To(() => vertex, x => vertex = x, result, _vertexMoveTweenSettings.duration)
+                   .OnUpdate(() => SetTweenVertices(_radarMesh, index, vertex));
+
+                _vertexMoveTweenSettings.ApplyTweenSettings(ref vertexMoveTween);
+                _vertexMoveTweens.Add(vertexMoveTween);
+
+                InitializeVertex(i);
             }
+            void SetTweenVertices(Mesh mesh, int index, Vector3 vertex)
+            {
+                _radarMeshVertices[index] = vertex;
+                mesh.vertices = _radarMeshVertices;
+                _radarMesh = mesh;
+                
+                _meshCanvasRenderer.SetMesh(mesh);
+                _meshCanvasRenderer.SetMaterial(_meshMaterial, null);
+            }
+            void InitializeVertex(int index)
+            {
+                _radarMeshVertices[index] = Vector3.one;
+            }
+
         }
         private void DefineTriangles(int[] tris)
         {
@@ -152,6 +186,7 @@ namespace KaitoMajima.Radar
                 tris[i] = vertexIndex;
             }
         }
+        
         private void SetMeshData(Mesh mesh, Vector3[] verts, Vector2[] uvs, int[] tris)
         {
             mesh.vertices = verts;
@@ -160,22 +195,6 @@ namespace KaitoMajima.Radar
 
             _meshCanvasRenderer.SetMesh(mesh);
             _meshCanvasRenderer.SetMaterial(_meshMaterial, null);
-        }
-        private void SetGradeText(GradeStat gradeStat, TMP_Text statValueTextComponent)
-        {
-            var gradeStatGrade = gradeStat.value.ToString();
-
-            switch (gradeStatGrade)
-            {
-                case "None":
-                    gradeStatGrade = string.Empty;
-                    break;
-                case "Infinity":
-                    gradeStatGrade = "∞";
-                    break;
-            }
-
-            statValueTextComponent.SetText(gradeStatGrade);
         }
 
         private bool CheckIndexHasntSurpassedList<T>(int index, List<T> list)

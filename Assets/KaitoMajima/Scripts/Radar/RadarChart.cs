@@ -1,15 +1,12 @@
 using System;
-using DG.Tweening;
-using KaitoMajima.TweenControllers;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace KaitoMajima.Radar
 {
     public class RadarChart : MonoBehaviour
     {
+        [Header("Local Dependencies")]
         [SerializeField] private GradeStats _stats;
         public GradeStats Stats 
         { 
@@ -27,7 +24,7 @@ namespace KaitoMajima.Radar
         [SerializeField] private bool _randomizeIncludeInfinity = true; 
 
         [ContextMenu("Debug Randomize Stats")]
-        private void RandomizeStats()
+        public void RandomizeStats()
         {
             foreach (var stat in _stats)
             {
