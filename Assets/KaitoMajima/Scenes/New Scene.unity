@@ -311,8 +311,8 @@ MonoBehaviour:
   - {fileID: 683731859}
   - {fileID: 949420955}
   _meshMaterial: {fileID: 2100000, guid: c8a9958cae9c4074abeade49caeb42dc, type: 2}
-  _initialTweeningChartDelay: 0.5
-  _sequentialTweeningChartDelay: 0.1
+  _initialTweeningChartDelay: 0
+  _sequentialTweeningChartDelay: 0
   _vertexMoveTweenSettings:
     initializeMethod: 0
     tweenOrientation: 0
@@ -322,11 +322,11 @@ MonoBehaviour:
     loopType: 0
     isRelative: 0
     isInverted: 0
-    duration: 1
+    duration: 2
     delay: 0
-    easeType: 24
-    easeAmplitude: 1
-    easePeriod: 0.5
+    easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
