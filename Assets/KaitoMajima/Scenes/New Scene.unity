@@ -311,6 +311,8 @@ MonoBehaviour:
   - {fileID: 683731859}
   - {fileID: 949420955}
   _meshMaterial: {fileID: 2100000, guid: c8a9958cae9c4074abeade49caeb42dc, type: 2}
+  _initialTweeningChartDelay: 0.5
+  _sequentialTweeningChartDelay: 0.1
   _vertexMoveTweenSettings:
     initializeMethod: 0
     tweenOrientation: 0
@@ -320,9 +322,11 @@ MonoBehaviour:
     loopType: 0
     isRelative: 0
     isInverted: 0
-    duration: 2
+    duration: 1
     delay: 0
-    easeType: 7
+    easeType: 24
+    easeAmplitude: 1
+    easePeriod: 0.5
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -510,6 +514,8 @@ MonoBehaviour:
     duration: 2.5
     delay: 0
     easeType: 21
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -539,6 +545,8 @@ MonoBehaviour:
     duration: 0.5
     delay: 0
     easeType: 21
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -641,7 +649,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: C
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
   m_sharedMaterial: {fileID: 8397349150968840953, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
@@ -958,8 +966,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 1.5
+    delay: 2
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -1266,8 +1276,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 2
+    delay: 2.5
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -1765,8 +1777,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 1.6
+    delay: 2.1
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -1832,6 +1846,8 @@ MonoBehaviour:
     duration: 2
     delay: 0
     easeType: 6
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -2092,8 +2108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textComponent: {fileID: 914336049}
   _playOnStart: 1
-  _initialDelay: 0.2
-  _letterDelay: 0.115
+  _initialDelay: 1
+  _letterDelay: 0.1
 --- !u!1 &933435638
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,8 +2168,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 1.7
+    delay: 2.2
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -2254,7 +2272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: B
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
   m_sharedMaterial: {fileID: 8397349150968840953, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
@@ -2824,7 +2842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
   m_sharedMaterial: {fileID: 8397349150968840953, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
@@ -3196,6 +3214,8 @@ MonoBehaviour:
     duration: 2
     delay: 0
     easeType: 6
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -8363,7 +8383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
   m_sharedMaterial: {fileID: 8397349150968840953, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
@@ -8510,8 +8530,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 1.8
+    delay: 2.3
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -9217,7 +9239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
   m_sharedMaterial: {fileID: 8397349150968840953, guid: 5ab8f5c35188771438bf290bb4aa4e29, type: 2}
@@ -9400,8 +9422,10 @@ MonoBehaviour:
     isRelative: 0
     isInverted: 0
     duration: 0.5
-    delay: 1.9
+    delay: 2.4
     easeType: 7
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -9739,6 +9763,8 @@ MonoBehaviour:
     duration: 2
     delay: 0
     easeType: 6
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []
@@ -9768,6 +9794,8 @@ MonoBehaviour:
     duration: 2
     delay: 0
     easeType: 6
+    easeAmplitude: 1.70158
+    easePeriod: 0
     onTweenFinished:
       m_PersistentCalls:
         m_Calls: []

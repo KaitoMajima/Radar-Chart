@@ -23,6 +23,8 @@ namespace KaitoMajima.Radar
 
         [Header("Animations")]
         private List<Tween> _vertexMoveTweens = new List<Tween>();
+        [SerializeField] private float _initialTweeningChartDelay = 0.5f;
+        [SerializeField] private float _sequentialTweeningChartDelay = 0.25f;
         [SerializeField] private TweenSettings _vertexMoveTweenSettings = TweenControllers.TweenSettings.Default;
         
         [Header("Settings")]
@@ -123,6 +125,7 @@ namespace KaitoMajima.Radar
 
             var angleIncrement = 360 / gradeStats.Count;
             var highestRadarPointYAxis = _highestRadarPoint.anchoredPosition.y;
+            
             for (int i = 1; i < verts.Length; i++)
             {
 
@@ -142,6 +145,7 @@ namespace KaitoMajima.Radar
                    .OnUpdate(() => SetTweenVertices(_radarMesh, index, vertex));
 
                 _vertexMoveTweenSettings.ApplyTweenSettings(ref vertexMoveTween);
+                vertexMoveTween.SetDelay(_initialTweeningChartDelay + statIndex * _sequentialTweeningChartDelay);
                 _vertexMoveTweens.Add(vertexMoveTween);
 
                 InitializeVertex(i);

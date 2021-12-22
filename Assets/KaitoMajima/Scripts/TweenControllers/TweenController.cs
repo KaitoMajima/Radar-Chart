@@ -99,7 +99,13 @@ namespace KaitoMajima.TweenControllers
         [Header("Values")]
         public float duration;
         public float delay;
+
+        [Header("Easing")]
         public Ease easeType;
+        public float easeAmplitude;
+
+        public float easePeriod;
+
 
         [Header("Events")]
         public UnityEvent onTweenFinished;
@@ -107,12 +113,14 @@ namespace KaitoMajima.TweenControllers
         public static TweenSettings Default = new TweenSettings()
         {
             duration = 1,
-            easeType = Ease.InOutQuad
+            easeType = Ease.InOutQuad,
+            easeAmplitude = 1.70158f,
+            easePeriod = 0
         };
 
         public void ApplyTweenSettings(ref Tween tween)
         {
-            tween.SetEase(easeType)
+            tween.SetEase(easeType, easeAmplitude, easePeriod)
                 .SetLoops(loopAmount, loopType)
                 .SetDelay(delay)
                 .SetUpdate(updateType, ignoreTimeScale)
